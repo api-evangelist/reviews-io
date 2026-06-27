@@ -1,0 +1,64 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: REVIEWS.io
+providerId: reviews-io
+created: '2026-06-25'
+modified: '2026-06-25'
+reconciled: false
+tags:
+- Reviews
+- UGC
+- Ratings
+- Reputation
+- eCommerce
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  The REVIEWS.io API is authenticated per store with a public store key and a
+  private API key. Published developer documentation does not state explicit
+  numeric request-per-minute or request-per-day rate limits; throttling and
+  abuse protections are applied at the platform level. Plan-level review
+  invitation allowances (per month, by subscription tier) act as the primary
+  usage quota. Specific per-endpoint rate-limit values are not reconciled in
+  this artifact.
+notes: >-
+  Confirm any documented numeric rate limits and 429 throttling behavior with
+  REVIEWS.io support at reconciliation. Invitation volume caps are governed by
+  the subscribed plan rather than per-second API throttling.
+sources:
+- https://developer.reviews.io/reference
+- https://support.reviews.io/en/articles/9185068-reviews-io-api
+- https://www.reviews.io/front/pricingplans
+responseCodes:
+  throttled: 429
+limits:
+- name: Requests Per Minute (RPM)
+  scope: store
+  metric: requests
+  limit: see provider documentation
+  notes: No explicit numeric RPM published; platform-level throttling may apply.
+- name: Requests Per Day (RPD)
+  scope: store
+  metric: requests
+  limit: see provider documentation
+  notes: No explicit numeric RPD published; platform-level throttling may apply.
+- name: Monthly Review Invitations
+  scope: store
+  metric: invitations
+  limit: varies by plan (300 / 1,500 / 5,000 / 10,000 / unlimited)
+  notes: Invitation allowance is set by the subscribed plan tier.
+- name: SMS Invitations
+  scope: store
+  metric: invitations
+  limit: plan-dependent add-on
+  notes: SMS invitation volume is a plan add-on, adjustable after signup.
+policies:
+- name: Plan-Based Quotas
+  description: Monthly invitation volume is capped by the subscribed plan; Enterprise offers unlimited invitations.
+- name: Backoff Strategy
+  description: Clients should implement retries with exponential backoff and honor any Retry-After header on 429 responses.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

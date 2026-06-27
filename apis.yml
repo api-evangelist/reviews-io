@@ -1,0 +1,153 @@
+aid: reviews-io
+url: https://raw.githubusercontent.com/api-evangelist/reviews-io/refs/heads/main/apis.yml
+name: REVIEWS.io
+kind: company
+description: REVIEWS.io is a product and company reviews and user-generated content
+  (UGC) platform that helps brands collect, manage, and display verified customer
+  reviews. Its REST API (https://api.reviews.io) lets developers queue review
+  invitations, retrieve product and company reviews, fetch ratings and widget data,
+  manage questions, and subscribe to webhooks using store + apikey authentication.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Reviews
+- UGC
+- Ratings
+- Reputation
+- eCommerce
+created: '2026-06-25'
+modified: '2026-06-25'
+specificationVersion: '0.19'
+apis:
+- aid: reviews-io:invitations-collect
+  name: REVIEWS.io Invitations / Collect API
+  tags:
+  - Invitations
+  - Collect
+  - Email
+  - SMS
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.reviews.io/reference/product-review-invitations
+  baseURL: https://api.reviews.io
+  properties:
+  - url: https://developer.reviews.io/reference/product-review-invitations
+    type: Documentation
+  - url: https://developer.reviews.io/reference
+    type: APIReference
+  - url: openapi/reviews-io-openapi.yml
+    type: OpenAPI
+  description: Queue product and company review invitations via email or SMS, list
+    queued invitations, and edit pending invitations to collect verified reviews
+    from customers after a purchase.
+- aid: reviews-io:product-reviews
+  name: REVIEWS.io Product Reviews API
+  tags:
+  - Product Reviews
+  - Reviews
+  - eCommerce
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.reviews.io/reference/09a10508634b01f463d1beacf3471b6a
+  baseURL: https://api.reviews.io
+  properties:
+  - url: https://developer.reviews.io/reference/09a10508634b01f463d1beacf3471b6a
+    type: Documentation
+  - url: https://developer.reviews.io/reference
+    type: APIReference
+  - url: openapi/reviews-io-openapi.yml
+    type: OpenAPI
+  description: Retrieve product reviews by SKU or MPN with rich filtering, create
+    new product reviews, and add to the helpful-vote count of an individual product
+    review.
+- aid: reviews-io:company-reviews
+  name: REVIEWS.io Company Reviews API
+  tags:
+  - Company Reviews
+  - Merchant Reviews
+  - Reputation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.reviews.io/reference
+  baseURL: https://api.reviews.io
+  properties:
+  - url: https://developer.reviews.io/reference
+    type: Documentation
+  - url: https://developer.reviews.io/reference
+    type: APIReference
+  - url: openapi/reviews-io-openapi.yml
+    type: OpenAPI
+  description: Retrieve company (merchant) reviews for a store, including ratings,
+    review bodies, author details, and pagination for building reputation displays
+    and reports.
+- aid: reviews-io:ratings-widgets
+  name: REVIEWS.io Ratings / Widgets API
+  tags:
+  - Ratings
+  - Widgets
+  - Statistics
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.reviews.io/reference
+  baseURL: https://api.reviews.io
+  properties:
+  - url: https://developer.reviews.io/reference
+    type: Documentation
+  - url: https://developer.reviews.io/reference
+    type: APIReference
+  - url: openapi/reviews-io-openapi.yml
+    type: OpenAPI
+  description: Retrieve aggregate product ratings, basic review statistics, review
+    nuggets, and user-generated content used to build star ratings, badges, and
+    on-site display widgets.
+- aid: reviews-io:questions
+  name: REVIEWS.io Questions API
+  tags:
+  - Questions
+  - Q&A
+  - UGC
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.reviews.io/reference
+  baseURL: https://api.reviews.io
+  properties:
+  - url: https://developer.reviews.io/reference
+    type: Documentation
+  - url: https://developer.reviews.io/reference
+    type: APIReference
+  - url: openapi/reviews-io-openapi.yml
+    type: OpenAPI
+  description: Create new customer questions and retrieve a combined feed of reviews
+    and questions for custom-built filtering and on-page question-and-answer
+    displays.
+- aid: reviews-io:webhooks
+  name: REVIEWS.io Webhooks API
+  tags:
+  - Webhooks
+  - Events
+  - Notifications
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.reviews.io/reference/2966f9313240bd3856bb4045dac3731f
+  baseURL: https://api.reviews.io
+  properties:
+  - url: https://developer.reviews.io/reference/2966f9313240bd3856bb4045dac3731f
+    type: Documentation
+  - url: https://developer.reviews.io/reference
+    type: APIReference
+  - url: openapi/reviews-io-openapi.yml
+    type: OpenAPI
+  description: Subscribe to review-submitted webhooks (company and product, positive
+    and negative variants) and list configured webhooks to push review data into
+    your systems in real time.
+common:
+- type: GitHubOrganization
+  url: https://github.com/reviewscouk
+- type: LinkedIn
+  url: https://www.linkedin.com/company/reviews-io
+- type: Website
+  url: https://www.reviews.io
+- type: Documentation
+  url: https://developer.reviews.io/reference
+- type: Plans
+  url: plans/reviews-io-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/reviews-io-rate-limits.yml
+- type: FinOps
+  url: finops/reviews-io-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

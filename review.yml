@@ -1,0 +1,77 @@
+aid: reviews-io
+name: REVIEWS.io
+review:
+  question: Does REVIEWS.io expose a documented public WebSocket API?
+  answer: false
+  date: '2026-06-25'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No streaming, Server-Sent Events, or WebSocket surface is documented for
+    REVIEWS.io. Real-time delivery of review data is handled by outbound HTTP
+    webhooks (POST to a subscriber URL), not by a client-facing streaming
+    transport. No AsyncAPI document was created because there is no SSE or
+    WebSocket channel to model; the webhook surface is described in the
+    OpenAPI document and apis.yml instead.
+findings:
+  summary: |
+    REVIEWS.io does not publish a documented public WebSocket API. The platform
+    exposes a REST (HTTPS) API under https://api.reviews.io, authenticated with
+    a `store` (public store key) and `apikey` (private API key). Real-time
+    events are delivered via outbound webhooks: clients register a target URL
+    with POST /webhook/add and REVIEWS.io POSTs review data to that URL when a
+    review is submitted. This is server-to-client HTTP push, not a WebSocket or
+    SSE stream consumed by API clients. No ws:// or wss:// endpoint is
+    documented for invitations, reviews, ratings, questions, or any other
+    product surface as of the review date.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.reviews.io
+      documented: true
+    - protocol: Webhook
+      scheme: https
+      note: Outbound HTTP POST to a subscriber-registered URL on review-submitted events. Not a client-consumed stream.
+      documented: true
+    - protocol: SSE
+      scheme: https
+      documented: false
+      note: No Server-Sent Events streaming endpoint is documented.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented anywhere in the REVIEWS.io developer reference.
+  endpointsConfirmedRest:
+    - POST https://api.reviews.io/invitation
+    - POST https://api.reviews.io/product/invitation
+    - GET  https://api.reviews.io/product/invitation
+    - POST https://api.reviews.io/merchant/invitation
+    - GET  https://api.reviews.io/merchant/invitation
+    - GET  https://api.reviews.io/merchant/reviews
+    - GET  https://api.reviews.io/product/review
+    - POST https://api.reviews.io/product/review/new
+    - GET  https://api.reviews.io/product/vote
+    - GET  https://api.reviews.io/product/rating-batch
+    - GET  https://api.reviews.io/stats/all
+    - GET  https://api.reviews.io/reviews
+    - GET  https://api.reviews.io/ugc
+    - POST https://api.reviews.io/questions/store
+    - POST https://api.reviews.io/webhook/add
+    - GET  https://api.reviews.io/webhook/list
+sources:
+  - url: https://developer.reviews.io/reference
+    type: APIReference
+    note: Developer reference lists REST endpoints over https://api.reviews.io; no WebSocket mentioned.
+  - url: https://support.reviews.io/en/articles/9185068-reviews-io-api
+    type: Documentation
+    note: Confirms base URL https://api.reviews.io and store + apikey header authentication.
+  - url: https://developer.reviews.io/reference/2966f9313240bd3856bb4045dac3731f
+    type: APIReference
+    note: Add-webhook endpoint (POST /webhook/add) describes outbound HTTP push, not a streaming transport.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket or SSE protocol surface exists. Real-time delivery is via
+    outbound webhooks, which are documented in the OpenAPI specification and in
+    apis.yml as the Webhooks API. No AsyncAPI document was authored.

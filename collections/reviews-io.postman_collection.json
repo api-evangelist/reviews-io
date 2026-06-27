@@ -1,0 +1,329 @@
+{
+  "info": {
+    "name": "REVIEWS.io API",
+    "description": "REST API for the REVIEWS.io product and company reviews / UGC platform. Authenticated with store (public key) and apikey (private key).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.reviews.io"
+    },
+    {
+      "key": "store",
+      "value": ""
+    },
+    {
+      "key": "apikey",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Invitations",
+      "item": [
+        {
+          "name": "Queue a product (and/or company) review invitation",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "store", "value": "{{store}}" },
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/invitation",
+              "host": ["{{baseUrl}}"],
+              "path": ["invitation"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"order_id\": \"ORDER-123\",\n  \"products\": [\n    { \"sku\": \"SKU-1\", \"name\": \"Example Product\" }\n  ]\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Queue a product review invitation",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "store", "value": "{{store}}" },
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/product/invitation?store={{store}}&apikey={{apikey}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["product", "invitation"],
+              "query": [
+                { "key": "store", "value": "{{store}}" },
+                { "key": "apikey", "value": "{{apikey}}" }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"order_id\": \"ORDER-123\",\n  \"products\": [ { \"sku\": \"SKU-1\" } ]\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Queue a company review invitation",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "store", "value": "{{store}}" },
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/merchant/invitation?store={{store}}&apikey={{apikey}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["merchant", "invitation"],
+              "query": [
+                { "key": "store", "value": "{{store}}" },
+                { "key": "apikey", "value": "{{apikey}}" }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"order_id\": \"ORDER-123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product Reviews",
+      "item": [
+        {
+          "name": "Retrieve product reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/product/review?store={{store}}&sku=SKU-1",
+              "host": ["{{baseUrl}}"],
+              "path": ["product", "review"],
+              "query": [
+                { "key": "store", "value": "{{store}}" },
+                { "key": "sku", "value": "SKU-1" },
+                { "key": "page", "value": "1", "disabled": true },
+                { "key": "per_page", "value": "20", "disabled": true },
+                { "key": "minRating", "value": "4", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create a new product review",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "store", "value": "{{store}}" },
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/product/review/new?store={{store}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["product", "review", "new"],
+              "query": [
+                { "key": "store", "value": "{{store}}" }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"SKU-1\",\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"rating\": 5,\n  \"review\": \"Highly recommended.\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Add to the vote count of a product review",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/product/vote?store={{store}}&product_review_id=12345",
+              "host": ["{{baseUrl}}"],
+              "path": ["product", "vote"],
+              "query": [
+                { "key": "store", "value": "{{store}}" },
+                { "key": "product_review_id", "value": "12345" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Company Reviews",
+      "item": [
+        {
+          "name": "Retrieve company reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/merchant/reviews?store={{store}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["merchant", "reviews"],
+              "query": [
+                { "key": "store", "value": "{{store}}" },
+                { "key": "apikey", "value": "{{apikey}}", "disabled": true },
+                { "key": "page", "value": "1", "disabled": true },
+                { "key": "per_page", "value": "20", "disabled": true }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ratings",
+      "item": [
+        {
+          "name": "Retrieve product ratings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/product/rating-batch?store={{store}}&sku=SKU-1",
+              "host": ["{{baseUrl}}"],
+              "path": ["product", "rating-batch"],
+              "query": [
+                { "key": "store", "value": "{{store}}" },
+                { "key": "sku", "value": "SKU-1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Retrieve basic review statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/stats/all?store={{store}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["stats", "all"],
+              "query": [
+                { "key": "store", "value": "{{store}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Retrieve user-generated content",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ugc?store={{store}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["ugc"],
+              "query": [
+                { "key": "store", "value": "{{store}}" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Questions",
+      "item": [
+        {
+          "name": "Create a new question",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "store", "value": "{{store}}" },
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/questions/store?store={{store}}&apikey={{apikey}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["questions", "store"],
+              "query": [
+                { "key": "store", "value": "{{store}}" },
+                { "key": "apikey", "value": "{{apikey}}" }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"SKU-1\",\n  \"question\": \"Does this come with a warranty?\",\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Retrieve reviews and questions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reviews?store={{store}}&type=product_review",
+              "host": ["{{baseUrl}}"],
+              "path": ["reviews"],
+              "query": [
+                { "key": "store", "value": "{{store}}" },
+                { "key": "type", "value": "product_review" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "Add a review submitted webhook",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "store", "value": "{{store}}" },
+              { "key": "apikey", "value": "{{apikey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/webhook/add?store={{store}}&apikey={{apikey}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["webhook", "add"],
+              "query": [
+                { "key": "store", "value": "{{store}}" },
+                { "key": "apikey", "value": "{{apikey}}" }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"product_review\",\n  \"url\": \"https://example.com/webhooks/reviews\",\n  \"includes\": \"\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "List all webhooks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/webhook/list?store={{store}}&apikey={{apikey}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["webhook", "list"],
+              "query": [
+                { "key": "store", "value": "{{store}}" },
+                { "key": "apikey", "value": "{{apikey}}" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

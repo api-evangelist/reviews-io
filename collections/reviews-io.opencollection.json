@@ -1,0 +1,245 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "REVIEWS.io API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "apikey": {
+        "in": "header",
+        "key": "apikey",
+        "value": "{{apikey}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Invitations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Queue a product (and/or company) review invitation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.reviews.io/invitation",
+            "body": {
+              "type": "json",
+              "data": "{\"name\":\"Jane Doe\",\"email\":\"jane@example.com\",\"order_id\":\"ORDER-123\",\"products\":[{\"sku\":\"SKU-1\",\"name\":\"Example Product\"}]}"
+            }
+          },
+          "docs": "Queues a review invitation for a customer following a purchase."
+        },
+        {
+          "info": {
+            "name": "Queue a product review invitation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.reviews.io/product/invitation?store={{store}}&apikey={{apikey}}",
+            "body": {
+              "type": "json",
+              "data": "{\"name\":\"Jane Doe\",\"email\":\"jane@example.com\",\"order_id\":\"ORDER-123\",\"products\":[{\"sku\":\"SKU-1\"}]}"
+            }
+          },
+          "docs": "Queues a product-review invitation. Deprecated in favor of POST /invitation."
+        },
+        {
+          "info": {
+            "name": "Queue a company review invitation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.reviews.io/merchant/invitation?store={{store}}&apikey={{apikey}}",
+            "body": {
+              "type": "json",
+              "data": "{\"name\":\"Jane Doe\",\"email\":\"jane@example.com\",\"order_id\":\"ORDER-123\"}"
+            }
+          },
+          "docs": "Queues a company (merchant) review invitation. Deprecated in favor of POST /invitation."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Product Reviews",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve product reviews",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.reviews.io/product/review?store={{store}}&sku=SKU-1"
+          },
+          "docs": "Returns product reviews filtered by SKU or MPN with rich filtering options."
+        },
+        {
+          "info": {
+            "name": "Create a new product review",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.reviews.io/product/review/new?store={{store}}",
+            "body": {
+              "type": "json",
+              "data": "{\"sku\":\"SKU-1\",\"name\":\"Jane Doe\",\"email\":\"jane@example.com\",\"rating\":5,\"review\":\"Highly recommended.\"}"
+            }
+          },
+          "docs": "Creates a new product review for the supplied SKU."
+        },
+        {
+          "info": {
+            "name": "Add to the vote count of a product review",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.reviews.io/product/vote?store={{store}}&product_review_id=12345"
+          },
+          "docs": "Increments the helpful-vote count of a single product review."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Company Reviews",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve company reviews",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.reviews.io/merchant/reviews?store={{store}}"
+          },
+          "docs": "Returns company (merchant) reviews for the supplied store."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Ratings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve product ratings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.reviews.io/product/rating-batch?store={{store}}&sku=SKU-1"
+          },
+          "docs": "Returns review counts and aggregate ratings for a list of products."
+        },
+        {
+          "info": {
+            "name": "Retrieve basic review statistics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.reviews.io/stats/all?store={{store}}"
+          },
+          "docs": "Returns basic review statistics across product, company, and third-party reviews."
+        },
+        {
+          "info": {
+            "name": "Retrieve user-generated content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.reviews.io/ugc?store={{store}}"
+          },
+          "docs": "Returns user-generated content (photo and video reviews) for the store."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Questions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a new question",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.reviews.io/questions/store?store={{store}}&apikey={{apikey}}",
+            "body": {
+              "type": "json",
+              "data": "{\"sku\":\"SKU-1\",\"question\":\"Does this come with a warranty?\",\"name\":\"Jane Doe\",\"email\":\"jane@example.com\"}"
+            }
+          },
+          "docs": "Creates a new customer question against a product or store."
+        },
+        {
+          "info": {
+            "name": "Retrieve reviews and questions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.reviews.io/reviews?store={{store}}&type=product_review"
+          },
+          "docs": "Returns a combined feed of reviews and questions for custom filtering."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add a review submitted webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.reviews.io/webhook/add",
+            "body": {
+              "type": "json",
+              "data": "{\"type\":\"product_review\",\"url\":\"https://example.com/webhooks/reviews\",\"includes\":\"\"}"
+            }
+          },
+          "docs": "Subscribes a target URL to review-submitted events."
+        },
+        {
+          "info": {
+            "name": "List all webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.reviews.io/webhook/list"
+          },
+          "docs": "Returns all webhook subscriptions configured for the store."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,189 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: REVIEWS.io
+providerId: reviews-io
+created: '2026-06-25'
+modified: '2026-06-25'
+reconciled: true
+tags:
+- Reviews
+- UGC
+- Ratings
+- Reputation
+- eCommerce
+- Plans
+description: >-
+  REVIEWS.io sells subscription plans tiered primarily by the number of review
+  invitations included per month, with feature gating across tiers. All plans
+  include a 14-day free trial and can be billed monthly or annually (annual
+  billing carries a ~20% discount). API access is bundled into the higher
+  Plus and Enterprise tiers; Enterprise adds unlimited invitations and custom
+  API endpoints. Each top-level domain requires its own subscription.
+notes: >-
+  Plan names, prices, and invitation allowances reflect the published REVIEWS.io
+  pricing page and may change; verify on reviews.io/pricing at reconciliation.
+  Add-ons such as SMS invitations and survey responses are adjustable after
+  signup.
+sources:
+- https://www.reviews.io/front/pricingplans
+- https://developer.reviews.io/reference
+plans:
+- id: reviews-io-essentials
+  name: Essentials
+  type: subscription
+  description: >-
+    Entry plan with product and company reviews, photo and video collection,
+    automated review collection, and on-site display widgets.
+  entries:
+  - label: Monthly Subscription
+    name: essentials_monthly
+    type: flat
+    metric: subscription
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $29/month (or ~20% off annual)
+    userMultiplied: false
+  - label: Review Invitations
+    name: essentials_invitations
+    type: usage
+    metric: invitations
+    limit: 300
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included up to 300/month
+    userMultiplied: false
+  elements:
+  - name: Product & Company Reviews
+  - name: Photo & Video Collection
+  - name: Automated Review Collection
+  - name: On-Site Display Widgets
+- id: reviews-io-startup
+  name: Start-Up
+  type: subscription
+  description: >-
+    Adds Google Seller Ratings, rich snippets, review importing, third-party
+    collection, Klaviyo integration, and monthly SMS invitations.
+  entries:
+  - label: Monthly Subscription
+    name: startup_monthly
+    type: flat
+    metric: subscription
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $99/month (or ~20% off annual)
+    userMultiplied: false
+  - label: Review Invitations
+    name: startup_invitations
+    type: usage
+    metric: invitations
+    limit: 1500
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included up to 1,500/month
+    userMultiplied: false
+  elements:
+  - name: Google Seller Ratings
+  - name: Rich Snippets
+  - name: Review Importing
+  - name: Klaviyo Integration
+  - name: SMS Invitations
+- id: reviews-io-grow
+  name: Grow
+  type: subscription
+  description: >-
+    Adds reputation manager, AI review summaries, competitor analysis, custom
+    attributes, and monthly survey replies.
+  entries:
+  - label: Monthly Subscription
+    name: grow_monthly
+    type: flat
+    metric: subscription
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $299/month (or ~20% off annual)
+    userMultiplied: false
+  - label: Review Invitations
+    name: grow_invitations
+    type: usage
+    metric: invitations
+    limit: 5000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included up to 5,000/month
+    userMultiplied: false
+  elements:
+  - name: Reputation Manager
+  - name: AI Review Summaries
+  - name: Competitor Analysis
+  - name: Custom Attributes
+  - name: Customer Surveys
+- id: reviews-io-plus
+  name: Plus
+  type: subscription
+  description: >-
+    Top published tier adding AI-generated replies, multi-language translation,
+    widget development support, a customer success manager, shoppable UGC
+    galleries, Bazaarvoice syndication, and API access.
+  entries:
+  - label: Monthly Subscription
+    name: plus_monthly
+    type: flat
+    metric: subscription
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $499/month (or ~20% off annual)
+    userMultiplied: false
+  - label: Review Invitations
+    name: plus_invitations
+    type: usage
+    metric: invitations
+    limit: 10000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included up to 10,000/month
+    userMultiplied: false
+  elements:
+  - name: API Access
+  - name: AI-Generated Replies
+  - name: Multi-Language Translation
+  - name: Shoppable UGC Galleries
+  - name: Bazaarvoice Syndication
+  - name: Customer Success Manager
+- id: reviews-io-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    For large brands needing complex controls, unlimited invitations, custom
+    API endpoints, and dedicated support. Pricing on request.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Unlimited Invitations
+  - name: Custom API Endpoints
+  - name: Dedicated Support
+  - name: Advanced Customization
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

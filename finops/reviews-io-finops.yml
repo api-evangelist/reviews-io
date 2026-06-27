@@ -1,0 +1,104 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: REVIEWS.io
+providerId: reviews-io
+created: '2026-06-25'
+modified: '2026-06-25'
+reconciled: true
+tags:
+- Reviews
+- UGC
+- Ratings
+- Reputation
+- eCommerce
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of REVIEWS.io spend. REVIEWS.io bills a recurring subscription
+  per store tiered by monthly review-invitation allowance, with feature gating
+  across Essentials, Start-Up, Grow, Plus, and Enterprise. Annual billing
+  discounts the subscription (~20%). Variable cost drivers include SMS
+  invitations and survey responses as plan add-ons. Each top-level domain
+  requires its own subscription, which is the main multiplier for multi-brand
+  spend.
+notes: >-
+  Subscription prices and invitation tiers reflect the published pricing page
+  and may change; verify at reconciliation. SMS and survey add-on rates depend
+  on account configuration.
+sources:
+- https://www.reviews.io/front/pricingplans
+- https://developer.reviews.io/reference
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: REVIEWS.io
+serviceCategory: Marketing and Customer Experience
+billingModel:
+  pricingCategory: Subscription-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: REVIEWS.io
+  ServiceCategory: Marketing and Customer Experience
+  ProviderName: REVIEWS.io
+  PublisherName: REVIEWS.io
+  InvoiceIssuerName: REVIEWS.io
+  BillingCurrency: USD
+  ChargeCategory: Purchase
+  PricingCategory: Subscription-Based
+meters:
+- name: subscription_plan
+  description: Recurring monthly or annual subscription fee for the store's plan tier.
+  unit: subscription
+  aggregation: sum
+  dimensions:
+  - account
+  - plan
+  - domain
+- name: review_invitations
+  description: Review invitations sent against the plan's monthly allowance.
+  unit: invitations
+  aggregation: sum
+  dimensions:
+  - account
+  - plan
+- name: sms_invitations
+  description: SMS review invitations sent as a plan add-on.
+  unit: invitations
+  aggregation: sum
+  dimensions:
+  - account
+- name: survey_responses
+  description: Survey responses collected against the plan's monthly survey allowance.
+  unit: responses
+  aggregation: sum
+  dimensions:
+  - account
+- name: domains
+  description: Number of top-level domains, each requiring its own subscription.
+  unit: domains
+  aggregation: sum
+  dimensions:
+  - account
+principles:
+- name: Visibility
+  description: Track subscription tier, invitation consumption vs. allowance, and add-on usage per store/domain.
+- name: Allocation
+  description: Map each subscription and domain to the owning brand or business unit.
+- name: Optimization
+  description: Right-size the plan tier to actual invitation volume; choose annual billing for ~20% savings; consolidate add-ons.
+- name: Accountability
+  description: Assign an owner per store subscription and review invitation burn against allowance monthly.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
