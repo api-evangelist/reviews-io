@@ -1,0 +1,23 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/reviews-io-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: storeKey
+  type: apiKey
+  in: header
+  parameter: store
+  description: Your REVIEWS.io public store key.
+  sources:
+  - openapi/reviews-io-openapi.yml
+- name: apiKey
+  type: apiKey
+  in: header
+  parameter: apikey
+  description: Your REVIEWS.io private API key.
+  sources:
+  - openapi/reviews-io-openapi.yml

@@ -134,6 +134,10 @@ apis:
     and negative variants) and list configured webhooks to push review data into
     your systems in real time.
 common:
+- type: DomainSecurity
+  url: security/reviews-io-domain-security.yml
+- type: Authentication
+  url: authentication/reviews-io-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/reviewscouk
 - type: LinkedIn
@@ -148,6 +152,8 @@ common:
   url: rate-limits/reviews-io-rate-limits.yml
 - type: FinOps
   url: finops/reviews-io-finops.yml
+- url: https://blog.reviews.io/
+  type: Blog
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
