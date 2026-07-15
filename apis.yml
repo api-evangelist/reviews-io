@@ -134,6 +134,8 @@ apis:
     and negative variants) and list configured webhooks to push review data into
     your systems in real time.
 common:
+- type: AgenticAccess
+  url: agentic-access/reviews-io-agentic-access.yml
 - type: DomainSecurity
   url: security/reviews-io-domain-security.yml
 - type: Authentication
