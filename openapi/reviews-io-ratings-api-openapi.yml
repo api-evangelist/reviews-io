@@ -1,0 +1,146 @@
+openapi: 3.0.1
+info:
+  title: REVIEWS.io Company Reviews Ratings API
+  description: REST API for the REVIEWS.io product and company reviews / user-generated content platform. Queue review invitations, retrieve product and company reviews, fetch ratings and statistics, manage questions, and subscribe to review-submitted webhooks. Requests are authenticated with a `store` (public store key) and `apikey` (private API key), available in the REVIEWS.io dashboard under Integrations -> API.
+  termsOfService: https://www.reviews.io/terms
+  contact:
+    name: REVIEWS.io Support
+    url: https://support.reviews.io
+  version: '1.0'
+servers:
+- url: https://api.reviews.io
+  description: REVIEWS.io production API
+security:
+- storeKey: []
+  apiKey: []
+tags:
+- name: Ratings
+  description: Aggregate product ratings and review statistics.
+paths:
+  /product/rating-batch:
+    get:
+      operationId: retrieveProductRatings
+      tags:
+      - Ratings
+      summary: Retrieve product ratings
+      description: Returns review counts and aggregate ratings for a list of products identified by SKU.
+      parameters:
+      - $ref: '#/components/parameters/store'
+      - $ref: '#/components/parameters/apikey'
+      - name: sku
+        in: query
+        schema:
+          type: string
+        description: One or more product SKUs separated by semicolons.
+      responses:
+        '200':
+          description: Product ratings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductRatingsResponse'
+  /stats/all:
+    get:
+      operationId: retrieveReviewStatistics
+      tags:
+      - Ratings
+      summary: Retrieve basic review statistics
+      description: Returns basic review statistics (average rating and total review count) across product, company, and third-party reviews, used to build star-rating and badge widgets.
+      parameters:
+      - $ref: '#/components/parameters/store'
+      - $ref: '#/components/parameters/apikey'
+      responses:
+        '200':
+          description: Review statistics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewStatisticsResponse'
+  /ugc:
+    get:
+      operationId: retrieveUserGeneratedContent
+      tags:
+      - Ratings
+      summary: Retrieve user-generated content
+      description: Returns user-generated content (photo and video reviews and related media) for the store, used to power UGC and shoppable galleries.
+      parameters:
+      - $ref: '#/components/parameters/store'
+      - $ref: '#/components/parameters/apikey'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: User-generated content
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  parameters:
+    perPage:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+      description: Number of items per page.
+    store:
+      name: store
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Your REVIEWS.io public store key.
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+      description: Results page number.
+    apikey:
+      name: apikey
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Your REVIEWS.io private API key (required for write and private data).
+  schemas:
+    ProductRatingsResponse:
+      type: object
+      properties:
+        store:
+          type: string
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              sku:
+                type: string
+              average_rating:
+                type: number
+              num_ratings:
+                type: integer
+    ReviewStatisticsResponse:
+      type: object
+      properties:
+        store:
+          type: string
+        average_rating:
+          type: number
+        total_reviews:
+          type: integer
+        rating_breakdown:
+          type: object
+          additionalProperties:
+            type: integer
+  securitySchemes:
+    storeKey:
+      type: apiKey
+      in: header
+      name: store
+      description: Your REVIEWS.io public store key.
+    apiKey:
+      type: apiKey
+      in: header
+      name: apikey
+      description: Your REVIEWS.io private API key.

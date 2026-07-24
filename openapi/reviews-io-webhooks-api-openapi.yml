@@ -1,0 +1,125 @@
+openapi: 3.0.1
+info:
+  title: REVIEWS.io Company Reviews Webhooks API
+  description: REST API for the REVIEWS.io product and company reviews / user-generated content platform. Queue review invitations, retrieve product and company reviews, fetch ratings and statistics, manage questions, and subscribe to review-submitted webhooks. Requests are authenticated with a `store` (public store key) and `apikey` (private API key), available in the REVIEWS.io dashboard under Integrations -> API.
+  termsOfService: https://www.reviews.io/terms
+  contact:
+    name: REVIEWS.io Support
+    url: https://support.reviews.io
+  version: '1.0'
+servers:
+- url: https://api.reviews.io
+  description: REVIEWS.io production API
+security:
+- storeKey: []
+  apiKey: []
+tags:
+- name: Webhooks
+  description: Manage review-submitted webhook subscriptions.
+paths:
+  /webhook/add:
+    post:
+      operationId: addWebhook
+      tags:
+      - Webhooks
+      summary: Add a review submitted webhook
+      description: Subscribes a target URL to review-submitted events. The `type` selects the notification (company or product review, positive or negative, create or update variants).
+      parameters:
+      - $ref: '#/components/parameters/store'
+      - $ref: '#/components/parameters/apikey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookRequest'
+      responses:
+        '200':
+          description: Webhook created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+  /webhook/list:
+    get:
+      operationId: listWebhooks
+      tags:
+      - Webhooks
+      summary: List all webhooks
+      description: Returns all webhook subscriptions configured for the store.
+      parameters:
+      - $ref: '#/components/parameters/store'
+      - $ref: '#/components/parameters/apikey'
+      responses:
+        '200':
+          description: Configured webhooks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Webhook'
+components:
+  parameters:
+    store:
+      name: store
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Your REVIEWS.io public store key.
+    apikey:
+      name: apikey
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Your REVIEWS.io private API key (required for write and private data).
+  schemas:
+    Webhook:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        url:
+          type: string
+        includes:
+          type: string
+    WebhookRequest:
+      type: object
+      required:
+      - type
+      - url
+      properties:
+        type:
+          type: string
+          description: The review event type to subscribe to.
+          enum:
+          - company_review
+          - company_review_positive
+          - company_review_negative
+          - product_review
+          - product_review_positive
+          - product_review_negative
+          - company_review_updated
+          - product_review_updated
+        url:
+          type: string
+          format: uri
+          description: The target URL that will receive the webhook POST.
+        includes:
+          type: string
+          description: Allow additional data to be returned in the webhook payload.
+  securitySchemes:
+    storeKey:
+      type: apiKey
+      in: header
+      name: store
+      description: Your REVIEWS.io public store key.
+    apiKey:
+      type: apiKey
+      in: header
+      name: apikey
+      description: Your REVIEWS.io private API key.

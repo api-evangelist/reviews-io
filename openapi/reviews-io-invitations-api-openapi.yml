@@ -1,0 +1,211 @@
+openapi: 3.0.1
+info:
+  title: REVIEWS.io Company Reviews Invitations API
+  description: REST API for the REVIEWS.io product and company reviews / user-generated content platform. Queue review invitations, retrieve product and company reviews, fetch ratings and statistics, manage questions, and subscribe to review-submitted webhooks. Requests are authenticated with a `store` (public store key) and `apikey` (private API key), available in the REVIEWS.io dashboard under Integrations -> API.
+  termsOfService: https://www.reviews.io/terms
+  contact:
+    name: REVIEWS.io Support
+    url: https://support.reviews.io
+  version: '1.0'
+servers:
+- url: https://api.reviews.io
+  description: REVIEWS.io production API
+security:
+- storeKey: []
+  apiKey: []
+tags:
+- name: Invitations
+  description: Queue, list, and edit product and company review invitations.
+paths:
+  /invitation:
+    post:
+      operationId: queueProductInvitation
+      tags:
+      - Invitations
+      summary: Queue a product (and/or company) review invitation
+      description: Queues a review invitation for a customer following a purchase. Supply the customer name and email, the order reference, and an optional list of products so REVIEWS.io can request product and/or company reviews.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvitationRequest'
+      responses:
+        '200':
+          description: Invitation queued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvitationResponse'
+  /product/invitation:
+    post:
+      operationId: queueProductInvitationOnly
+      tags:
+      - Invitations
+      summary: Queue a product review invitation
+      description: Queues a product-review invitation for a customer and the supplied products. (Deprecated in favor of POST /invitation, which applies Flow rules to queue both product and company invitations in one request.)
+      parameters:
+      - $ref: '#/components/parameters/store'
+      - $ref: '#/components/parameters/apikey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvitationRequest'
+      responses:
+        '200':
+          description: Invitation queued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvitationResponse'
+    get:
+      operationId: listProductInvitations
+      tags:
+      - Invitations
+      summary: List product invitations
+      description: Retrieves a paginated list of queued product review invitations.
+      parameters:
+      - $ref: '#/components/parameters/store'
+      - $ref: '#/components/parameters/apikey'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: A list of invitations
+          content:
+            application/json:
+              schema:
+                type: object
+  /merchant/invitation:
+    post:
+      operationId: queueCompanyInvitation
+      tags:
+      - Invitations
+      summary: Queue a company review invitation
+      description: Queues a company (merchant) review invitation for a customer. (Deprecated in favor of POST /invitation.)
+      parameters:
+      - $ref: '#/components/parameters/store'
+      - $ref: '#/components/parameters/apikey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvitationRequest'
+      responses:
+        '200':
+          description: Invitation queued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvitationResponse'
+    get:
+      operationId: listCompanyInvitations
+      tags:
+      - Invitations
+      summary: List company invitations
+      description: Retrieves a paginated list of queued company review invitations.
+      parameters:
+      - $ref: '#/components/parameters/store'
+      - $ref: '#/components/parameters/apikey'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: A list of invitations
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    InvitationProduct:
+      type: object
+      properties:
+        sku:
+          type: string
+          description: Product SKU.
+        name:
+          type: string
+          description: Product name.
+        image:
+          type: string
+          description: Product image URL.
+        mpn:
+          type: string
+          description: Product MPN.
+    InvitationRequest:
+      type: object
+      required:
+      - name
+      - email
+      - order_id
+      properties:
+        name:
+          type: string
+          description: Customer name.
+        email:
+          type: string
+          format: email
+          description: Customer email address.
+        order_id:
+          type: string
+          description: Your order reference for the purchase.
+        template_id:
+          type: string
+          description: Optional invitation template identifier.
+        date_send:
+          type: string
+          description: Optional scheduled send date for the invitation.
+        products:
+          type: array
+          description: Products to request product reviews for.
+          items:
+            $ref: '#/components/schemas/InvitationProduct'
+    InvitationResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: string
+  parameters:
+    perPage:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+      description: Number of items per page.
+    store:
+      name: store
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Your REVIEWS.io public store key.
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+      description: Results page number.
+    apikey:
+      name: apikey
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Your REVIEWS.io private API key (required for write and private data).
+  securitySchemes:
+    storeKey:
+      type: apiKey
+      in: header
+      name: store
+      description: Your REVIEWS.io public store key.
+    apiKey:
+      type: apiKey
+      in: header
+      name: apikey
+      description: Your REVIEWS.io private API key.

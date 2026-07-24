@@ -1,0 +1,134 @@
+openapi: 3.0.1
+info:
+  title: REVIEWS.io Company Reviews Questions API
+  description: REST API for the REVIEWS.io product and company reviews / user-generated content platform. Queue review invitations, retrieve product and company reviews, fetch ratings and statistics, manage questions, and subscribe to review-submitted webhooks. Requests are authenticated with a `store` (public store key) and `apikey` (private API key), available in the REVIEWS.io dashboard under Integrations -> API.
+  termsOfService: https://www.reviews.io/terms
+  contact:
+    name: REVIEWS.io Support
+    url: https://support.reviews.io
+  version: '1.0'
+servers:
+- url: https://api.reviews.io
+  description: REVIEWS.io production API
+security:
+- storeKey: []
+  apiKey: []
+tags:
+- name: Questions
+  description: Create and retrieve customer questions.
+paths:
+  /questions/store:
+    post:
+      operationId: createQuestion
+      tags:
+      - Questions
+      summary: Create a new question
+      description: Creates a new customer question against a product or store.
+      parameters:
+      - $ref: '#/components/parameters/store'
+      - $ref: '#/components/parameters/apikey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateQuestionRequest'
+      responses:
+        '200':
+          description: Question created
+          content:
+            application/json:
+              schema:
+                type: object
+  /reviews:
+    get:
+      operationId: retrieveReviewsAndQuestions
+      tags:
+      - Questions
+      summary: Retrieve reviews and questions
+      description: Returns a combined feed of reviews and questions for the store. Use `type` to select store_review, product_review, store_third_party_review, or questions.
+      parameters:
+      - $ref: '#/components/parameters/store'
+      - $ref: '#/components/parameters/apikey'
+      - name: type
+        in: query
+        schema:
+          type: string
+          enum:
+          - store_review
+          - product_review
+          - store_third_party_review
+          - questions
+        description: The category of records to return.
+      - name: sku
+        in: query
+        schema:
+          type: string
+        description: Filter by one or more product SKUs.
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: Reviews and questions
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    CreateQuestionRequest:
+      type: object
+      required:
+      - question
+      properties:
+        sku:
+          type: string
+          description: Product SKU the question relates to.
+        question:
+          type: string
+          description: The question text.
+        name:
+          type: string
+          description: Asker name.
+        email:
+          type: string
+          format: email
+          description: Asker email.
+  parameters:
+    perPage:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+      description: Number of items per page.
+    store:
+      name: store
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Your REVIEWS.io public store key.
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+      description: Results page number.
+    apikey:
+      name: apikey
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Your REVIEWS.io private API key (required for write and private data).
+  securitySchemes:
+    storeKey:
+      type: apiKey
+      in: header
+      name: store
+      description: Your REVIEWS.io public store key.
+    apiKey:
+      type: apiKey
+      in: header
+      name: apikey
+      description: Your REVIEWS.io private API key.

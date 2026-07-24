@@ -1,0 +1,132 @@
+openapi: 3.0.1
+info:
+  title: REVIEWS.io Company Reviews API
+  description: REST API for the REVIEWS.io product and company reviews / user-generated content platform. Queue review invitations, retrieve product and company reviews, fetch ratings and statistics, manage questions, and subscribe to review-submitted webhooks. Requests are authenticated with a `store` (public store key) and `apikey` (private API key), available in the REVIEWS.io dashboard under Integrations -> API.
+  termsOfService: https://www.reviews.io/terms
+  contact:
+    name: REVIEWS.io Support
+    url: https://support.reviews.io
+  version: '1.0'
+servers:
+- url: https://api.reviews.io
+  description: REVIEWS.io production API
+security:
+- storeKey: []
+  apiKey: []
+tags:
+- name: Company Reviews
+  description: Retrieve company (merchant) reviews.
+paths:
+  /merchant/reviews:
+    get:
+      operationId: retrieveCompanyReviews
+      tags:
+      - Company Reviews
+      summary: Retrieve company reviews
+      description: Returns company (merchant) reviews for the supplied store, including rating, review body, author, and timestamps, with pagination.
+      parameters:
+      - $ref: '#/components/parameters/store'
+      - $ref: '#/components/parameters/apikey'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      - name: min_date
+        in: query
+        schema:
+          type: string
+        description: Filter reviews created on or after this date.
+      - name: max_date
+        in: query
+        schema:
+          type: string
+        description: Filter reviews created on or before this date.
+      responses:
+        '200':
+          description: Company reviews
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyReviewsResponse'
+components:
+  parameters:
+    perPage:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+      description: Number of items per page.
+    store:
+      name: store
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Your REVIEWS.io public store key.
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+      description: Results page number.
+    apikey:
+      name: apikey
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Your REVIEWS.io private API key (required for write and private data).
+  schemas:
+    CompanyReviewsResponse:
+      type: object
+      properties:
+        store:
+          type: string
+        word:
+          type: string
+        rating:
+          type: number
+        count:
+          type: integer
+        reviews:
+          type: object
+          properties:
+            total:
+              type: integer
+            per_page:
+              type: integer
+            current_page:
+              type: integer
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/CompanyReview'
+    CompanyReview:
+      type: object
+      properties:
+        store_review_id:
+          type: integer
+        rating:
+          type: integer
+        review:
+          type: string
+        date_created:
+          type: string
+        reviewer:
+          type: object
+          properties:
+            first_name:
+              type: string
+            last_name:
+              type: string
+            verified_buyer:
+              type: string
+  securitySchemes:
+    storeKey:
+      type: apiKey
+      in: header
+      name: store
+      description: Your REVIEWS.io public store key.
+    apiKey:
+      type: apiKey
+      in: header
+      name: apikey
+      description: Your REVIEWS.io private API key.
