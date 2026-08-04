@@ -1,0 +1,772 @@
+openapi: 3.0.1
+info:
+  title: REVIEWS.io API
+  description: >-
+    REST API for the REVIEWS.io product and company reviews / user-generated
+    content platform. Queue review invitations, retrieve product and company
+    reviews, fetch ratings and statistics, manage questions, and subscribe to
+    review-submitted webhooks. Requests are authenticated with a `store` (public
+    store key) and `apikey` (private API key), available in the REVIEWS.io
+    dashboard under Integrations -> API.
+  termsOfService: https://www.reviews.io/terms
+  contact:
+    name: REVIEWS.io Support
+    url: https://support.reviews.io
+  version: '1.0'
+servers:
+  - url: https://api.reviews.io
+    description: REVIEWS.io production API
+security:
+  - storeKey: []
+    apiKey: []
+tags:
+  - name: Invitations
+    description: Queue, list, and edit product and company review invitations.
+  - name: Product Reviews
+    description: Retrieve, create, and vote on product reviews.
+  - name: Company Reviews
+    description: Retrieve company (merchant) reviews.
+  - name: Ratings
+    description: Aggregate product ratings and review statistics.
+  - name: Questions
+    description: Create and retrieve customer questions.
+  - name: Webhooks
+    description: Manage review-submitted webhook subscriptions.
+paths:
+  /invitation:
+    post:
+      operationId: queueProductInvitation
+      tags:
+        - Invitations
+      summary: Queue a product (and/or company) review invitation
+      description: >-
+        Queues a review invitation for a customer following a purchase. Supply
+        the customer name and email, the order reference, and an optional list
+        of products so REVIEWS.io can request product and/or company reviews.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvitationRequest'
+      responses:
+        '200':
+          description: Invitation queued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvitationResponse'
+  /product/invitation:
+    post:
+      operationId: queueProductInvitationOnly
+      tags:
+        - Invitations
+      summary: Queue a product review invitation
+      description: >-
+        Queues a product-review invitation for a customer and the supplied
+        products. (Deprecated in favor of POST /invitation, which applies Flow
+        rules to queue both product and company invitations in one request.)
+      parameters:
+        - $ref: '#/components/parameters/store'
+        - $ref: '#/components/parameters/apikey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvitationRequest'
+      responses:
+        '200':
+          description: Invitation queued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvitationResponse'
+    get:
+      operationId: listProductInvitations
+      tags:
+        - Invitations
+      summary: List product invitations
+      description: Retrieves a paginated list of queued product review invitations.
+      parameters:
+        - $ref: '#/components/parameters/store'
+        - $ref: '#/components/parameters/apikey'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: A list of invitations
+          content:
+            application/json:
+              schema:
+                type: object
+  /merchant/invitation:
+    post:
+      operationId: queueCompanyInvitation
+      tags:
+        - Invitations
+      summary: Queue a company review invitation
+      description: >-
+        Queues a company (merchant) review invitation for a customer.
+        (Deprecated in favor of POST /invitation.)
+      parameters:
+        - $ref: '#/components/parameters/store'
+        - $ref: '#/components/parameters/apikey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvitationRequest'
+      responses:
+        '200':
+          description: Invitation queued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvitationResponse'
+    get:
+      operationId: listCompanyInvitations
+      tags:
+        - Invitations
+      summary: List company invitations
+      description: Retrieves a paginated list of queued company review invitations.
+      parameters:
+        - $ref: '#/components/parameters/store'
+        - $ref: '#/components/parameters/apikey'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: A list of invitations
+          content:
+            application/json:
+              schema:
+                type: object
+  /merchant/reviews:
+    get:
+      operationId: retrieveCompanyReviews
+      tags:
+        - Company Reviews
+      summary: Retrieve company reviews
+      description: >-
+        Returns company (merchant) reviews for the supplied store, including
+        rating, review body, author, and timestamps, with pagination.
+      parameters:
+        - $ref: '#/components/parameters/store'
+        - $ref: '#/components/parameters/apikey'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/perPage'
+        - name: min_date
+          in: query
+          schema:
+            type: string
+          description: Filter reviews created on or after this date.
+        - name: max_date
+          in: query
+          schema:
+            type: string
+          description: Filter reviews created on or before this date.
+      responses:
+        '200':
+          description: Company reviews
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyReviewsResponse'
+  /product/review:
+    get:
+      operationId: retrieveProductReviews
+      tags:
+        - Product Reviews
+      summary: Retrieve product reviews
+      description: >-
+        Returns product reviews filtered by SKU or MPN with options for
+        photos, verified-only, comments-only, minimum rating, and date ranges.
+      parameters:
+        - $ref: '#/components/parameters/store'
+        - $ref: '#/components/parameters/apikey'
+        - name: sku
+          in: query
+          schema:
+            type: string
+          description: One or more product SKUs separated by semicolons.
+        - name: mpn
+          in: query
+          schema:
+            type: string
+          description: One or more product MPNs separated by semicolons.
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/perPage'
+        - name: photos
+          in: query
+          schema:
+            type: boolean
+          description: Only return reviews that include photos.
+        - name: verified_only
+          in: query
+          schema:
+            type: boolean
+          description: Only return verified reviews.
+        - name: comments_only
+          in: query
+          schema:
+            type: boolean
+          description: Only return reviews that include a comment.
+        - name: minRating
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 5
+          description: Minimum star rating to include.
+        - name: min_date
+          in: query
+          schema:
+            type: string
+          description: Filter reviews created on or after this date.
+        - name: max_date
+          in: query
+          schema:
+            type: string
+          description: Filter reviews created on or before this date.
+      responses:
+        '200':
+          description: Product reviews
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductReviewsResponse'
+  /product/review/new:
+    post:
+      operationId: createProductReview
+      tags:
+        - Product Reviews
+      summary: Create a new product review
+      description: Creates a new product review for the supplied SKU.
+      parameters:
+        - $ref: '#/components/parameters/store'
+        - $ref: '#/components/parameters/apikey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductReviewRequest'
+      responses:
+        '200':
+          description: Product review created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductReview'
+  /product/vote:
+    get:
+      operationId: voteProductReview
+      tags:
+        - Product Reviews
+      summary: Add to the vote count of a product review
+      description: Increments the helpful-vote count of a single product review.
+      parameters:
+        - $ref: '#/components/parameters/store'
+        - name: product_review_id
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: The identifier of the product review to vote on.
+      responses:
+        '200':
+          description: Vote recorded
+          content:
+            application/json:
+              schema:
+                type: object
+  /product/rating-batch:
+    get:
+      operationId: retrieveProductRatings
+      tags:
+        - Ratings
+      summary: Retrieve product ratings
+      description: >-
+        Returns review counts and aggregate ratings for a list of products
+        identified by SKU.
+      parameters:
+        - $ref: '#/components/parameters/store'
+        - $ref: '#/components/parameters/apikey'
+        - name: sku
+          in: query
+          schema:
+            type: string
+          description: One or more product SKUs separated by semicolons.
+      responses:
+        '200':
+          description: Product ratings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductRatingsResponse'
+  /stats/all:
+    get:
+      operationId: retrieveReviewStatistics
+      tags:
+        - Ratings
+      summary: Retrieve basic review statistics
+      description: >-
+        Returns basic review statistics (average rating and total review count)
+        across product, company, and third-party reviews, used to build
+        star-rating and badge widgets.
+      parameters:
+        - $ref: '#/components/parameters/store'
+        - $ref: '#/components/parameters/apikey'
+      responses:
+        '200':
+          description: Review statistics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewStatisticsResponse'
+  /questions/store:
+    post:
+      operationId: createQuestion
+      tags:
+        - Questions
+      summary: Create a new question
+      description: Creates a new customer question against a product or store.
+      parameters:
+        - $ref: '#/components/parameters/store'
+        - $ref: '#/components/parameters/apikey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateQuestionRequest'
+      responses:
+        '200':
+          description: Question created
+          content:
+            application/json:
+              schema:
+                type: object
+  /reviews:
+    get:
+      operationId: retrieveReviewsAndQuestions
+      tags:
+        - Questions
+      summary: Retrieve reviews and questions
+      description: >-
+        Returns a combined feed of reviews and questions for the store. Use
+        `type` to select store_review, product_review, store_third_party_review,
+        or questions.
+      parameters:
+        - $ref: '#/components/parameters/store'
+        - $ref: '#/components/parameters/apikey'
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum:
+              - store_review
+              - product_review
+              - store_third_party_review
+              - questions
+          description: The category of records to return.
+        - name: sku
+          in: query
+          schema:
+            type: string
+          description: Filter by one or more product SKUs.
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: Reviews and questions
+          content:
+            application/json:
+              schema:
+                type: object
+  /ugc:
+    get:
+      operationId: retrieveUserGeneratedContent
+      tags:
+        - Ratings
+      summary: Retrieve user-generated content
+      description: >-
+        Returns user-generated content (photo and video reviews and related
+        media) for the store, used to power UGC and shoppable galleries.
+      parameters:
+        - $ref: '#/components/parameters/store'
+        - $ref: '#/components/parameters/apikey'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: User-generated content
+          content:
+            application/json:
+              schema:
+                type: object
+  /webhook/add:
+    post:
+      operationId: addWebhook
+      tags:
+        - Webhooks
+      summary: Add a review submitted webhook
+      description: >-
+        Subscribes a target URL to review-submitted events. The `type` selects
+        the notification (company or product review, positive or negative,
+        create or update variants).
+      parameters:
+        - $ref: '#/components/parameters/store'
+        - $ref: '#/components/parameters/apikey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookRequest'
+      responses:
+        '200':
+          description: Webhook created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+  /webhook/list:
+    get:
+      operationId: listWebhooks
+      tags:
+        - Webhooks
+      summary: List all webhooks
+      description: Returns all webhook subscriptions configured for the store.
+      parameters:
+        - $ref: '#/components/parameters/store'
+        - $ref: '#/components/parameters/apikey'
+      responses:
+        '200':
+          description: Configured webhooks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Webhook'
+components:
+  securitySchemes:
+    storeKey:
+      type: apiKey
+      in: header
+      name: store
+      description: Your REVIEWS.io public store key.
+    apiKey:
+      type: apiKey
+      in: header
+      name: apikey
+      description: Your REVIEWS.io private API key.
+  parameters:
+    store:
+      name: store
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Your REVIEWS.io public store key.
+    apikey:
+      name: apikey
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Your REVIEWS.io private API key (required for write and private data).
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+      description: Results page number.
+    perPage:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+      description: Number of items per page.
+  schemas:
+    InvitationRequest:
+      type: object
+      required:
+        - name
+        - email
+        - order_id
+      properties:
+        name:
+          type: string
+          description: Customer name.
+        email:
+          type: string
+          format: email
+          description: Customer email address.
+        order_id:
+          type: string
+          description: Your order reference for the purchase.
+        template_id:
+          type: string
+          description: Optional invitation template identifier.
+        date_send:
+          type: string
+          description: Optional scheduled send date for the invitation.
+        products:
+          type: array
+          description: Products to request product reviews for.
+          items:
+            $ref: '#/components/schemas/InvitationProduct'
+    InvitationProduct:
+      type: object
+      properties:
+        sku:
+          type: string
+          description: Product SKU.
+        name:
+          type: string
+          description: Product name.
+        image:
+          type: string
+          description: Product image URL.
+        mpn:
+          type: string
+          description: Product MPN.
+    InvitationResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: string
+    CompanyReviewsResponse:
+      type: object
+      properties:
+        store:
+          type: string
+        word:
+          type: string
+        rating:
+          type: number
+        count:
+          type: integer
+        reviews:
+          type: object
+          properties:
+            total:
+              type: integer
+            per_page:
+              type: integer
+            current_page:
+              type: integer
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/CompanyReview'
+    CompanyReview:
+      type: object
+      properties:
+        store_review_id:
+          type: integer
+        rating:
+          type: integer
+        review:
+          type: string
+        date_created:
+          type: string
+        reviewer:
+          type: object
+          properties:
+            first_name:
+              type: string
+            last_name:
+              type: string
+            verified_buyer:
+              type: string
+    ProductReviewsResponse:
+      type: object
+      properties:
+        store:
+          type: string
+        word:
+          type: string
+        reviews:
+          type: object
+          properties:
+            total:
+              type: integer
+            per_page:
+              type: integer
+            current_page:
+              type: integer
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductReview'
+    ProductReview:
+      type: object
+      properties:
+        store_review_id:
+          type: integer
+        product:
+          type: object
+          properties:
+            sku:
+              type: string
+            name:
+              type: string
+            mpn:
+              type: string
+        rating:
+          type: integer
+        title:
+          type: string
+        review:
+          type: string
+        date_created:
+          type: string
+        reviewer:
+          type: object
+          properties:
+            first_name:
+              type: string
+            last_name:
+              type: string
+            verified_buyer:
+              type: string
+    CreateProductReviewRequest:
+      type: object
+      required:
+        - sku
+        - name
+        - email
+        - rating
+        - review
+      properties:
+        sku:
+          type: string
+          description: Product SKU the review applies to.
+        name:
+          type: string
+          description: Reviewer name.
+        email:
+          type: string
+          format: email
+          description: Reviewer email.
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Star rating from 1 to 5.
+        review:
+          type: string
+          description: Review body text.
+        order_id:
+          type: string
+          description: Associated order reference.
+        tags:
+          type: string
+          description: Comma-separated tags to apply to the review.
+        address:
+          type: string
+          description: Reviewer address.
+        ip_address:
+          type: string
+          description: Reviewer IP address.
+        images:
+          type: array
+          description: Review images.
+          items:
+            type: string
+        ratings:
+          type: object
+          description: Sub-ratings keyed by attribute.
+        attribute:
+          type: object
+          description: Reviewer metadata attributes.
+    ProductRatingsResponse:
+      type: object
+      properties:
+        store:
+          type: string
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              sku:
+                type: string
+              average_rating:
+                type: number
+              num_ratings:
+                type: integer
+    ReviewStatisticsResponse:
+      type: object
+      properties:
+        store:
+          type: string
+        average_rating:
+          type: number
+        total_reviews:
+          type: integer
+        rating_breakdown:
+          type: object
+          additionalProperties:
+            type: integer
+    CreateQuestionRequest:
+      type: object
+      required:
+        - question
+      properties:
+        sku:
+          type: string
+          description: Product SKU the question relates to.
+        question:
+          type: string
+          description: The question text.
+        name:
+          type: string
+          description: Asker name.
+        email:
+          type: string
+          format: email
+          description: Asker email.
+    WebhookRequest:
+      type: object
+      required:
+        - type
+        - url
+      properties:
+        type:
+          type: string
+          description: The review event type to subscribe to.
+          enum:
+            - company_review
+            - company_review_positive
+            - company_review_negative
+            - product_review
+            - product_review_positive
+            - product_review_negative
+            - company_review_updated
+            - product_review_updated
+        url:
+          type: string
+          format: uri
+          description: The target URL that will receive the webhook POST.
+        includes:
+          type: string
+          description: Allow additional data to be returned in the webhook payload.
+    Webhook:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        url:
+          type: string
+        includes:
+          type: string

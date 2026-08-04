@@ -1,0 +1,24 @@
+{
+  "provider": "reviews-io",
+  "sources": [
+    "reviews-io-company-reviews-api-openapi.yml",
+    "reviews-io-invitations-api-openapi.yml",
+    "reviews-io-product-reviews-api-openapi.yml",
+    "reviews-io-questions-api-openapi.yml",
+    "reviews-io-ratings-api-openapi.yml",
+    "reviews-io-webhooks-api-openapi.yml"
+  ],
+  "outputs": [
+    "reviews-io-company-reviews-api-openapi.yml",
+    "reviews-io-invitations-api-openapi.yml",
+    "reviews-io-product-reviews-api-openapi.yml",
+    "reviews-io-questions-api-openapi.yml",
+    "reviews-io-ratings-api-openapi.yml",
+    "reviews-io-webhooks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
