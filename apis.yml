@@ -26,6 +26,12 @@ tags:
 - UGC
 - Ratings
 - Reputation
+- E-Commerce
+tags_raw:
+- Reviews
+- UGC
+- Ratings
+- Reputation
 - eCommerce
 created: '2026-06-25'
 modified: '2026-06-25'
@@ -137,6 +143,8 @@ apis:
   humanURL: https://developer.reviews.io/reference/product-review-invitations
   baseURL: https://api.reviews.io
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
