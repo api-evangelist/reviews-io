@@ -7,6 +7,18 @@ description: REVIEWS.io is a product and company reviews and user-generated cont
   reviews. Its REST API (https://api.reviews.io) lets developers queue review
   invitations, retrieve product and company reviews, fetch ratings and widget data,
   manage questions, and subscribe to webhooks using store + apikey authentication.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve
