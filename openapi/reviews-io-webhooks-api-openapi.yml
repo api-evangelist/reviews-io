@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: REVIEWS.io Company Reviews Webhooks API
+  title: REVIEWS.io Webhooks API
   description: REST API for the REVIEWS.io product and company reviews / user-generated content platform. Queue review invitations, retrieve product and company reviews, fetch ratings and statistics, manage questions, and subscribe to review-submitted webhooks. Requests are authenticated with a `store` (public store key) and `apikey` (private API key), available in the REVIEWS.io dashboard under Integrations -> API.
   termsOfService: https://www.reviews.io/terms
   contact:
@@ -60,21 +60,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/Webhook'
 components:
-  parameters:
-    store:
-      name: store
-      in: query
-      required: true
-      schema:
-        type: string
-      description: Your REVIEWS.io public store key.
-    apikey:
-      name: apikey
-      in: query
-      required: false
-      schema:
-        type: string
-      description: Your REVIEWS.io private API key (required for write and private data).
   schemas:
     Webhook:
       type: object
@@ -112,6 +97,21 @@ components:
         includes:
           type: string
           description: Allow additional data to be returned in the webhook payload.
+  parameters:
+    apikey:
+      name: apikey
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Your REVIEWS.io private API key (required for write and private data).
+    store:
+      name: store
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Your REVIEWS.io public store key.
   securitySchemes:
     storeKey:
       type: apiKey

@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: REVIEWS.io Company Reviews Invitations API
+  title: REVIEWS.io Invitations API
   description: REST API for the REVIEWS.io product and company reviews / user-generated content platform. Queue review invitations, retrieve product and company reviews, fetch ratings and statistics, manage questions, and subscribe to review-submitted webhooks. Requests are authenticated with a `store` (public store key) and `apikey` (private API key), available in the REVIEWS.io dashboard under Integrations -> API.
   termsOfService: https://www.reviews.io/terms
   contact:
@@ -120,22 +120,34 @@ paths:
               schema:
                 type: object
 components:
+  parameters:
+    perPage:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+      description: Number of items per page.
+    store:
+      name: store
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Your REVIEWS.io public store key.
+    apikey:
+      name: apikey
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Your REVIEWS.io private API key (required for write and private data).
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+      description: Results page number.
   schemas:
-    InvitationProduct:
-      type: object
-      properties:
-        sku:
-          type: string
-          description: Product SKU.
-        name:
-          type: string
-          description: Product name.
-        image:
-          type: string
-          description: Product image URL.
-        mpn:
-          type: string
-          description: Product MPN.
     InvitationRequest:
       type: object
       required:
@@ -171,33 +183,21 @@ components:
           type: string
         status:
           type: string
-  parameters:
-    perPage:
-      name: per_page
-      in: query
-      schema:
-        type: integer
-      description: Number of items per page.
-    store:
-      name: store
-      in: query
-      required: true
-      schema:
-        type: string
-      description: Your REVIEWS.io public store key.
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-      description: Results page number.
-    apikey:
-      name: apikey
-      in: query
-      required: false
-      schema:
-        type: string
-      description: Your REVIEWS.io private API key (required for write and private data).
+    InvitationProduct:
+      type: object
+      properties:
+        sku:
+          type: string
+          description: Product SKU.
+        name:
+          type: string
+          description: Product name.
+        image:
+          type: string
+          description: Product image URL.
+        mpn:
+          type: string
+          description: Product MPN.
   securitySchemes:
     storeKey:
       type: apiKey

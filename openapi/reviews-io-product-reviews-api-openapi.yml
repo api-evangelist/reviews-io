@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: REVIEWS.io Company Reviews Product Reviews API
+  title: REVIEWS.io Product Reviews API
   description: REST API for the REVIEWS.io product and company reviews / user-generated content platform. Queue review invitations, retrieve product and company reviews, fetch ratings and statistics, manage questions, and subscribe to review-submitted webhooks. Requests are authenticated with a `store` (public store key) and `apikey` (private API key), available in the REVIEWS.io dashboard under Integrations -> API.
   termsOfService: https://www.reviews.io/terms
   contact:
@@ -124,85 +124,7 @@ paths:
               schema:
                 type: object
 components:
-  parameters:
-    perPage:
-      name: per_page
-      in: query
-      schema:
-        type: integer
-      description: Number of items per page.
-    store:
-      name: store
-      in: query
-      required: true
-      schema:
-        type: string
-      description: Your REVIEWS.io public store key.
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-      description: Results page number.
-    apikey:
-      name: apikey
-      in: query
-      required: false
-      schema:
-        type: string
-      description: Your REVIEWS.io private API key (required for write and private data).
   schemas:
-    ProductReviewsResponse:
-      type: object
-      properties:
-        store:
-          type: string
-        word:
-          type: string
-        reviews:
-          type: object
-          properties:
-            total:
-              type: integer
-            per_page:
-              type: integer
-            current_page:
-              type: integer
-            data:
-              type: array
-              items:
-                $ref: '#/components/schemas/ProductReview'
-    ProductReview:
-      type: object
-      properties:
-        store_review_id:
-          type: integer
-        product:
-          type: object
-          properties:
-            sku:
-              type: string
-            name:
-              type: string
-            mpn:
-              type: string
-        rating:
-          type: integer
-        title:
-          type: string
-        review:
-          type: string
-        date_created:
-          type: string
-        reviewer:
-          type: object
-          properties:
-            first_name:
-              type: string
-            last_name:
-              type: string
-            verified_buyer:
-              type: string
     CreateProductReviewRequest:
       type: object
       required:
@@ -253,6 +175,84 @@ components:
         attribute:
           type: object
           description: Reviewer metadata attributes.
+    ProductReview:
+      type: object
+      properties:
+        store_review_id:
+          type: integer
+        product:
+          type: object
+          properties:
+            sku:
+              type: string
+            name:
+              type: string
+            mpn:
+              type: string
+        rating:
+          type: integer
+        title:
+          type: string
+        review:
+          type: string
+        date_created:
+          type: string
+        reviewer:
+          type: object
+          properties:
+            first_name:
+              type: string
+            last_name:
+              type: string
+            verified_buyer:
+              type: string
+    ProductReviewsResponse:
+      type: object
+      properties:
+        store:
+          type: string
+        word:
+          type: string
+        reviews:
+          type: object
+          properties:
+            total:
+              type: integer
+            per_page:
+              type: integer
+            current_page:
+              type: integer
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductReview'
+  parameters:
+    perPage:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+      description: Number of items per page.
+    store:
+      name: store
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Your REVIEWS.io public store key.
+    apikey:
+      name: apikey
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Your REVIEWS.io private API key (required for write and private data).
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+      description: Results page number.
   securitySchemes:
     storeKey:
       type: apiKey

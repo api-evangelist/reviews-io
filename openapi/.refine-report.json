@@ -1,12 +1,7 @@
 {
   "provider": "reviews-io",
   "sources": [
-    "reviews-io-company-reviews-api-openapi.yml",
-    "reviews-io-invitations-api-openapi.yml",
-    "reviews-io-product-reviews-api-openapi.yml",
-    "reviews-io-questions-api-openapi.yml",
-    "reviews-io-ratings-api-openapi.yml",
-    "reviews-io-webhooks-api-openapi.yml"
+    "_original/reviews-io-openapi.yml"
   ],
   "outputs": [
     "reviews-io-company-reviews-api-openapi.yml",
@@ -19,6 +14,17 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "reviews-io-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "reviews-io-company-reviews-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "reviews-io-invitations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "reviews-io-product-reviews-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "reviews-io-questions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "reviews-io-ratings-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "reviews-io-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
