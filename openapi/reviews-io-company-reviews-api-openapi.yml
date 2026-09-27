@@ -93,12 +93,12 @@ components:
               items:
                 $ref: '#/components/schemas/CompanyReview'
   parameters:
-    perPage:
-      name: per_page
+    page:
+      name: page
       in: query
       schema:
         type: integer
-      description: Number of items per page.
+      description: Results page number.
     store:
       name: store
       in: query
@@ -106,6 +106,12 @@ components:
       schema:
         type: string
       description: Your REVIEWS.io public store key.
+    perPage:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+      description: Number of items per page.
     apikey:
       name: apikey
       in: query
@@ -113,12 +119,6 @@ components:
       schema:
         type: string
       description: Your REVIEWS.io private API key (required for write and private data).
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-      description: Results page number.
   securitySchemes:
     storeKey:
       type: apiKey
