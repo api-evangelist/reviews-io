@@ -125,12 +125,6 @@ paths:
                 type: object
 components:
   parameters:
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-      description: Results page number.
     store:
       name: store
       in: query
@@ -138,12 +132,6 @@ components:
       schema:
         type: string
       description: Your REVIEWS.io public store key.
-    perPage:
-      name: per_page
-      in: query
-      schema:
-        type: integer
-      description: Number of items per page.
     apikey:
       name: apikey
       in: query
@@ -151,7 +139,39 @@ components:
       schema:
         type: string
       description: Your REVIEWS.io private API key (required for write and private data).
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+      description: Results page number.
+    perPage:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+      description: Number of items per page.
   schemas:
+    ProductReviewsResponse:
+      type: object
+      properties:
+        store:
+          type: string
+        word:
+          type: string
+        reviews:
+          type: object
+          properties:
+            total:
+              type: integer
+            per_page:
+              type: integer
+            current_page:
+              type: integer
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductReview'
     CreateProductReviewRequest:
       type: object
       required:
@@ -233,26 +253,6 @@ components:
               type: string
             verified_buyer:
               type: string
-    ProductReviewsResponse:
-      type: object
-      properties:
-        store:
-          type: string
-        word:
-          type: string
-        reviews:
-          type: object
-          properties:
-            total:
-              type: integer
-            per_page:
-              type: integer
-            current_page:
-              type: integer
-            data:
-              type: array
-              items:
-                $ref: '#/components/schemas/ProductReview'
   securitySchemes:
     storeKey:
       type: apiKey

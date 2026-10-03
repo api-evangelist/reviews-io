@@ -128,21 +128,6 @@ components:
           type: string
         status:
           type: string
-    InvitationProduct:
-      type: object
-      properties:
-        sku:
-          type: string
-          description: Product SKU.
-        name:
-          type: string
-          description: Product name.
-        image:
-          type: string
-          description: Product image URL.
-        mpn:
-          type: string
-          description: Product MPN.
     InvitationRequest:
       type: object
       required:
@@ -171,13 +156,22 @@ components:
           description: Products to request product reviews for.
           items:
             $ref: '#/components/schemas/InvitationProduct'
+    InvitationProduct:
+      type: object
+      properties:
+        sku:
+          type: string
+          description: Product SKU.
+        name:
+          type: string
+          description: Product name.
+        image:
+          type: string
+          description: Product image URL.
+        mpn:
+          type: string
+          description: Product MPN.
   parameters:
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-      description: Results page number.
     store:
       name: store
       in: query
@@ -185,12 +179,6 @@ components:
       schema:
         type: string
       description: Your REVIEWS.io public store key.
-    perPage:
-      name: per_page
-      in: query
-      schema:
-        type: integer
-      description: Number of items per page.
     apikey:
       name: apikey
       in: query
@@ -198,6 +186,18 @@ components:
       schema:
         type: string
       description: Your REVIEWS.io private API key (required for write and private data).
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+      description: Results page number.
+    perPage:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+      description: Number of items per page.
   securitySchemes:
     storeKey:
       type: apiKey
