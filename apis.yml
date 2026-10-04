@@ -172,6 +172,9 @@ apis:
   - type: Documentation
     url: https://developer.reviews.io/reference/2966f9313240bd3856bb4045dac3731f
 common:
+- type: CapabilityMap
+  url: capabilities/reviews-io-capability-edges.yml
+  name: REVIEWS.io Business Capability Map
 - type: AgenticAccess
   url: agentic-access/reviews-io-agentic-access.yml
 - type: DomainSecurity

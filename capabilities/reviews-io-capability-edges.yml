@@ -1,0 +1,44 @@
+slug: reviews-io
+provider: REVIEWS.io
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Company Reviews
+  spec_file: reviews-io-company-reviews-api-openapi.yml
+  capability_id: BC-430.50
+  capability_id_l1: BC-430
+  capability_name: Customer Feedback Management
+  confidence: 0.75
+  evidence: 'GET /merchant/reviews  retrieveCompanyReviews  Retrieve company reviews; schemas: CompanyReviewsResponse,
+    CompanyReview'
+  reason: Retrieval of verified customer reviews about the company is voice-of-customer / feedback collection,
+    which maps to Customer Feedback Management. Some chance a grader would place review UGC under marketing
+    content instead, hence 0.75.
+- tag: Invitations
+  spec_file: reviews-io-invitations-api-openapi.yml
+  capability_id: BC-430.50
+  capability_id_l1: BC-430
+  capability_name: Customer Feedback Management
+  confidence: 0.75
+  evidence: POST /merchant/invitation  queueCompanyInvitation  Queue a company review invitation
+  reason: Queuing and listing review invitations is the solicitation mechanism of a voice-of-customer
+    / survey programme, i.e. customer feedback management rather than a technical concern.
+- tag: Ratings
+  spec_file: reviews-io-ratings-api-openapi.yml
+  capability_id: BC-430.50
+  capability_id_l1: BC-430
+  capability_name: Customer Feedback Management
+  confidence: 0.7
+  evidence: GET /stats/all  retrieveReviewStatistics  Retrieve basic review statistics; GET /ugc  retrieveUserGeneratedContent
+  reason: Aggregated product ratings and review statistics are the measurement side of a review/voice-of-customer
+    programme. Moderate confidence as the UGC retrieval could also serve marketing content display.
