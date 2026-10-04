@@ -152,26 +152,6 @@ components:
         type: integer
       description: Number of items per page.
   schemas:
-    ProductReviewsResponse:
-      type: object
-      properties:
-        store:
-          type: string
-        word:
-          type: string
-        reviews:
-          type: object
-          properties:
-            total:
-              type: integer
-            per_page:
-              type: integer
-            current_page:
-              type: integer
-            data:
-              type: array
-              items:
-                $ref: '#/components/schemas/ProductReview'
     CreateProductReviewRequest:
       type: object
       required:
@@ -222,6 +202,26 @@ components:
         attribute:
           type: object
           description: Reviewer metadata attributes.
+    ProductReviewsResponse:
+      type: object
+      properties:
+        store:
+          type: string
+        word:
+          type: string
+        reviews:
+          type: object
+          properties:
+            total:
+              type: integer
+            per_page:
+              type: integer
+            current_page:
+              type: integer
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductReview'
     ProductReview:
       type: object
       properties:

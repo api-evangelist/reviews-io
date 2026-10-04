@@ -120,14 +120,34 @@ paths:
               schema:
                 type: object
 components:
+  parameters:
+    store:
+      name: store
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Your REVIEWS.io public store key.
+    apikey:
+      name: apikey
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Your REVIEWS.io private API key (required for write and private data).
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+      description: Results page number.
+    perPage:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+      description: Number of items per page.
   schemas:
-    InvitationResponse:
-      type: object
-      properties:
-        message:
-          type: string
-        status:
-          type: string
     InvitationRequest:
       type: object
       required:
@@ -156,6 +176,13 @@ components:
           description: Products to request product reviews for.
           items:
             $ref: '#/components/schemas/InvitationProduct'
+    InvitationResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: string
     InvitationProduct:
       type: object
       properties:
@@ -171,33 +198,6 @@ components:
         mpn:
           type: string
           description: Product MPN.
-  parameters:
-    store:
-      name: store
-      in: query
-      required: true
-      schema:
-        type: string
-      description: Your REVIEWS.io public store key.
-    apikey:
-      name: apikey
-      in: query
-      required: false
-      schema:
-        type: string
-      description: Your REVIEWS.io private API key (required for write and private data).
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-      description: Results page number.
-    perPage:
-      name: per_page
-      in: query
-      schema:
-        type: integer
-      description: Number of items per page.
   securitySchemes:
     storeKey:
       type: apiKey

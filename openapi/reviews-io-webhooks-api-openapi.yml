@@ -61,17 +61,6 @@ paths:
                   $ref: '#/components/schemas/Webhook'
 components:
   schemas:
-    Webhook:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        url:
-          type: string
-        includes:
-          type: string
     WebhookRequest:
       type: object
       required:
@@ -97,6 +86,17 @@ components:
         includes:
           type: string
           description: Allow additional data to be returned in the webhook payload.
+    Webhook:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        url:
+          type: string
+        includes:
+          type: string
   parameters:
     store:
       name: store

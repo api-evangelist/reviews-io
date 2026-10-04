@@ -75,6 +75,26 @@ components:
         type: integer
       description: Number of items per page.
   schemas:
+    CompanyReview:
+      type: object
+      properties:
+        store_review_id:
+          type: integer
+        rating:
+          type: integer
+        review:
+          type: string
+        date_created:
+          type: string
+        reviewer:
+          type: object
+          properties:
+            first_name:
+              type: string
+            last_name:
+              type: string
+            verified_buyer:
+              type: string
     CompanyReviewsResponse:
       type: object
       properties:
@@ -99,26 +119,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CompanyReview'
-    CompanyReview:
-      type: object
-      properties:
-        store_review_id:
-          type: integer
-        rating:
-          type: integer
-        review:
-          type: string
-        date_created:
-          type: string
-        reviewer:
-          type: object
-          properties:
-            first_name:
-              type: string
-            last_name:
-              type: string
-            verified_buyer:
-              type: string
   securitySchemes:
     storeKey:
       type: apiKey
