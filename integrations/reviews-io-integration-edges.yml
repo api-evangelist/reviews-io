@@ -1,0 +1,20 @@
+generated: '2026-10-12'
+method: none
+source:
+- https://zapier.com/apps/reviews-io/integrations
+- https://zapier.com/apps/reviews/integrations
+- https://n8n.io/integrations/reviews-io/
+- https://n8n.io/integrations/reviews/
+- https://composio.dev/toolkits/reviews-io
+- https://monid.ai/tools/reviews-io
+checked:
+- https://composio.dev/toolkits/reviews-io
+- https://monid.ai/tools/reviews-io
+- https://n8n.io/integrations/reviews-io/
+- https://n8n.io/integrations/reviews/
+- https://zapier.com/apps/reviews-io/integrations
+- https://zapier.com/apps/reviews/integrations
+summary: null
+marketplace_apps: []
+edges: []
+templates: []
