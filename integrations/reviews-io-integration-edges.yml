@@ -1,5 +1,5 @@
 generated: '2026-10-12'
-method: none
+method: searched
 source:
 - https://zapier.com/apps/reviews-io/integrations
 - https://zapier.com/apps/reviews/integrations
@@ -8,13 +8,66 @@ source:
 - https://composio.dev/toolkits/reviews-io
 - https://monid.ai/tools/reviews-io
 checked:
+- gorgias/integrations/gorgias-integration-edges.yml
 - https://composio.dev/toolkits/reviews-io
 - https://monid.ai/tools/reviews-io
 - https://n8n.io/integrations/reviews-io/
 - https://n8n.io/integrations/reviews/
 - https://zapier.com/apps/reviews-io/integrations
 - https://zapier.com/apps/reviews/integrations
+- zendesk/integrations/zendesk-integration-edges.yml
+- bigcommerce/integrations/bigcommerce-integration-edges.yml
 summary: null
 marketplace_apps: []
-edges: []
+edges:
+- partner_name: Gorgias (own)
+  partner: gorgias
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://www.gorgias.com/apps/influence-io
+  mirror_of: gorgias/integrations/gorgias-integration-edges.yml
+  apps:
+  - Influence.io
+  listing_count: 1
+  detected: '2026-10-19'
+  detected_by: mirror-platform-listings.py
+- partner_name: Zendesk (own)
+  partner: zendesk
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://www.zendesk.com/marketplace/apps/support/132606/reviews-io-app/
+  mirror_of: zendesk/integrations/zendesk-integration-edges.yml
+  apps:
+  - REVIEWS.io App
+  listing_count: 1
+  detected: '2026-10-19'
+  detected_by: mirror-platform-listings.py
+  category: eComm and Payments
+- partner_name: BigCommerce (own)
+  partner: bigcommerce
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://www.bigcommerce.com/apps/reviews-io/
+  mirror_of: bigcommerce/integrations/bigcommerce-integration-edges.yml
+  apps:
+  - REVIEWS.io
+  listing_count: 1
+  detected: '2026-10-20'
+  detected_by: mirror-platform-listings.py
+  category: Merchandising, Ratings & Reviews
 templates: []
